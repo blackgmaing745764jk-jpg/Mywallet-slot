@@ -1,0 +1,32 @@
+    <!-- Deposit Modal (KPay သီးသန့်ပြင်ဆင်ရန်) -->
+    <div class="modal-overlay" id="depositModal">
+        <div class="modal-content">
+            <h3>📥 KPay ဖြင့် ငွေသွင်းရန်</h3>
+            <div style="background: #111827; padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 13px; border: 1px dashed #fbbf24;">
+                <p style="margin: 0; color: #fbbf24; font-weight: bold;">KBZPay Account:</p>
+                <p style="margin: 5px 0 0 0; color: #fff;">09-XXXXXXXXX (U Kyaw)</p>
+            </div>
+            <p style="font-size: 12px; color: #9ca3af; margin-bottom: 5px;">အနည်းဆုံး 1,000 Ks - အများဆုံး 5,000,000 Ks</p>
+            <input type="number" id="depAmount" placeholder="သွင်းမည့် ပမာဏ (ကျပ်)">
+            <input type="text" id="depRef" placeholder="ငွေလွှဲစလစ် (သို့) ငွေလွှဲနံပါတ် နောက်ဆုံး ၆ လုံး">
+            <div class="modal-btns">
+                <button style="background:#374151; color:white;" onclick="closeModal('depositModal')">ပိတ်မည်</button>
+                <button style="background:#10b981; color:white;" onclick="submitDeposit()">ငွေသွင်းမည်</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Withdraw Modal (KPay ထုတ်ရန် သီးသန့်ပြင်ဆင်ရန်) -->
+    <div class="modal-overlay" id="withdrawModal">
+        <div class="modal-content">
+            <h3>📤 KPay ဖြင့် ငွေထုတ်ရန်</h3>
+            <p style="font-size: 12px; color: #9ca3af; margin-bottom: 5px;">အနည်းဆုံး 3,000 Ks - အများဆုံး 3,000,000 Ks</p>
+            <input type="number" id="wdAmount" placeholder="ထုတ်မည့် ပမာဏ (ကျပ်)">
+            <input type="text" id="wdAccount" placeholder="KPay ဖုန်းနံပါတ်">
+            <input type="text" id="wdName" placeholder="KPay အကောင့်ပိုင်ရှင် အမည်">
+            <div class="modal-btns">
+                <button style="background:#374151; color:white;" onclick="closeModal('withdrawModal')">ပိတ်မည်</button>
+                <button style="background:#f59e0b; color:white;" onclick="submitWithdraw()">ငွေထုတ်မည်</button>
+            </div>
+        </div>
+    </div>
