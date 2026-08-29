@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Lobby</title>
+    <style>
+        body { background: #0f172a; color: #fff; font-family: sans-serif; text-align: center; margin: 0; padding: 20px; }
+        .container { max-width: 400px; margin: auto; background: #1e293b; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .balance { font-size: 18px; margin-bottom: 15px; color: #fbbf24; font-weight: bold; }
+        .btn-wingo { display: block; background: #3b82f6; color: white; padding: 12px; border-radius: 8px; text-align: center; text-decoration: none; font-weight: bold; margin-bottom: 15px; }
+        .balloon-section { background: #0f172a; padding: 15px; border-radius: 12px; border: 1px solid #334155; }
+        .multiplier { font-size: 28px; font-weight: bold; margin: 10px 0; color: #34d399; }
+        input, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: none; font-size: 16px; box-sizing: border-box; }
+        input { background: #334155; color: #fff; text-align: center; }
+        .btn-start { background: #3b82f6; color: #fff; font-weight: bold; cursor: pointer; }
+        .btn-cashout { background: #10b981; color: #fff; font-weight: bold; cursor: pointer; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🎮 Game Lobby</h2>
+    <div class="balance">လက်ကျန်ငွေ: <span id="userBal">5000</span> ကျပ်</div>
+
+    <!-- Wingo ခလုတ် -->
+    <a href="/wingo" class="btn-wingo">🎲 Win Go (30s)</a>
+
+    <!-- မိုးပျံဖူဖောင်း ဂိမ်း -->
+    <div class="balloon-section">
+        <h3 style="color: #34d399; margin-top: 0;">🎈 မိုးပျံဖူဖောင်း ဂိမ်း</h3>
+        <div id="balloonEmoji" style="font-size: 40px; margin: 5px 0;">🎈</div>
+        <div class="multiplier" id="multiplierText">1.00x</div>
+
+        <input type="number" id="betAmount" value="1000">
+        <button class="btn-start" id="startBtn" onclick="startGame()">ဂိမ်းစမည်</button>
+        <button class="btn-cashout" id="cashoutBtn" onclick="cashOut()">ငွေထုတ်မည် (Cash Out)</button>
+    </div>
+</div>
+
+<script>
+    let balance = 5000;
+    let currentMultiplier = 1.00;
+    let gameInterval;
+    let isPlaying = false;
+    let crashPoint = 1.00;
+
+    function startGame() {
+        let bet = parseInt(document.getElementById('betAmount').value);
+        if (isNaN(bet) || bet <= 0 || bet > balance) {
+            alert('ငွေပမာဏ မမှန်ကန်ပါ သို့မဟုတ် လက်ကျန်ငွေ မလုံလောက်ပါ။');
+            return;
+        }
+
+        balance -= bet;
+        document.getElementById('userBal').innerText = balance;
+        document.getElementById('startBtn').style.display = 'none';
+        document.getElementById('cashoutBtn').style.display = 'block';
+
+        currentMultiplier = 1.00;
+        isPlaying = true;
+        crashPoint = (Math.random() * (4.0 - 1.2) + 1.2).toFixed(2);
+
+        gameInterval = setInterval(() => {
+            currentMultiplier += 0.05;
+            document.getElementById('multiplierText').innerText = currentMultiplier.toFixed(2) + 'x';
+
+            if (currentMultiplier >= parseFloat(crashPoint)) {
+                clearInterval(gameInterval);
+                isPlaying = false;
+                document.getElementById('balloonEmoji').innerText = '💥';
+                alert('ဖူဖောင်း ပေါက်သွားပါပြီ! ရှုံးသွားပါပြီ။');
+                resetGame();
+            }
+        }, 150);
+    }
+
+    function cashOut() {
+        if (!isPlaying) return;
+        clearInterval(gameInterval);
+        isPlaying = false;
+
+        let bet = parseInt(document.getElementById('betAmount').value);
+        let winAmount = Math.floor(bet * currentMultiplier);
+        balance += winAmount;
+        document.getElementById('userBal').innerText = balance;
+
+        alert(`အောင်မြင်သည်! ${winAmount} ကျပ် ရရှိသွားပါပြီ။`);
+        resetGame();
+    }
+
+    function resetGame() {
+        document.getElementById('startBtn').style.display = 'block';
+        document.getElementById('cashoutBtn').style.display = 'none';
+        document.getElementById('balloonEmoji').innerText = '🎈';
+        document.getElementById('multiplierText').innerText = '1.00x';
+    }
+</script>
+
+</body>
+</html>
