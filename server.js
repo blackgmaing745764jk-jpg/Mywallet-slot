@@ -16,18 +16,18 @@ app.get('/', (req, res) => {
     <html lang="my">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <title>BK777 - Premium Gaming</title>
         <style>
             * { box-sizing: border-box; }
-            body { margin: 0; background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 100%); color: #f8fafc; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+            body { margin: 0; background: #090d16; color: #f8fafc; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
             
             #loadingScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #090d16; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.5s ease; }
             .loader-logo { font-size: 42px; font-weight: 900; color: #fbbf24; margin-bottom: 20px; letter-spacing: 2px; text-shadow: 0 0 20px rgba(251, 191, 36, 0.5); }
             .spinner { width: 45px; height: 45px; border: 4px solid #1e293b; border-top: 4px solid #fbbf24; border-radius: 50%; animation: spin 0.8s linear infinite; }
             @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-            #authScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(9, 13, 22, 0.95); display: none; justify-content: center; align-items: center; z-index: 8888; backdrop-filter: blur(10px); }
+            #authScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(9, 13, 22, 0.98); display: none; justify-content: center; align-items: center; z-index: 8888; backdrop-filter: blur(10px); }
             .auth-card { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #334155; padding: 25px; border-radius: 20px; width: 90%; max-width: 380px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); text-align: center; }
             .auth-tabs { display: flex; margin-bottom: 20px; border-bottom: 2px solid #334155; }
             .auth-tab { flex: 1; padding: 12px; cursor: pointer; font-weight: bold; color: #64748b; background: none; border: none; font-size: 14px; transition: 0.3s; }
@@ -49,7 +49,6 @@ app.get('/', (req, res) => {
             .grid-games { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
             .game-box { background: rgba(15, 23, 42, 0.8); border: 1px solid #334155; border-radius: 14px; padding: 16px 10px; text-align: center; cursor: pointer; transition: all 0.25s ease; position: relative; overflow: hidden; }
             .game-box:hover { border-color: #fbbf24; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(251, 191, 36, 0.15); }
-            .game-box:active { transform: scale(0.97); }
             .game-icon { font-size: 32px; margin-bottom: 6px; }
             .game-box h4 { margin: 6px 0 2px 0; color: #fbbf24; font-size: 14px; font-weight: bold; }
             .game-box span { font-size: 11px; color: #64748b; }
@@ -59,7 +58,7 @@ app.get('/', (req, res) => {
             .nav-item.active, .nav-item:hover { color: #fbbf24; }
 
             .modal-overlay, .game-screen-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 200; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
-            .game-screen-overlay { background: #090d16; flex-direction: column; padding: 15px; box-sizing: border-box; overflow-y: auto; z-index: 300; }
+            .game-screen-overlay { background: #090d16; flex-direction: column; padding: 15px; box-sizing: border-box; overflow-y: auto; z-index: 300; display: none; }
             .modal-content { background: linear-gradient(145deg, #1e293b, #0f172a); padding: 25px; border-radius: 20px; width: 90%; max-width: 380px; border: 1px solid #334155; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
             .modal-content h3 { color: #fff; margin-top: 0; font-size: 18px; border-bottom: 1px solid #334155; padding-bottom: 10px; }
             .modal-content input, .modal-content select { width: 100%; padding: 12px; margin: 10px 0; background: #090d16; border: 1px solid #334155; color: #fff; border-radius: 10px; box-sizing: border-box; font-size: 13px; outline: none; }
@@ -70,7 +69,7 @@ app.get('/', (req, res) => {
             .back-lobby-btn { background: #dc2626; color: white; border: none; padding: 8px 14px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 12px; }
             
             /* Betting Controls */
-            .bet-control-container { display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 360px; margin: 10px 0; background: rgba(30, 41, 59, 0.6); padding: 15px; border-radius: 16px; border: 1px solid #334155; }
+            .bet-control-container { display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 380px; margin: 10px 0; background: rgba(30, 41, 59, 0.6); padding: 15px; border-radius: 16px; border: 1px solid #334155; }
             .bet-chips { display: flex; gap: 6px; justify-content: center; }
             .chip { background: #334155; color: #f8fafc; border: 1px solid #475569; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; }
             .chip:active, .chip:hover { background: #fbbf24; color: #0f172a; border-color: #fbbf24; }
@@ -226,14 +225,14 @@ app.get('/', (req, res) => {
             </div>
         </div>
 
-        <!-- Game Screen Overlay -->
+        <!-- Game Screen Overlay (Dark Mode Fixed) -->
         <div class="game-screen-overlay" id="gameScreenOverlay">
             <div class="game-header">
                 <button class="back-lobby-btn" onclick="closeGame()">❮ ထွက်မည်</button>
                 <div style="font-weight: bold; color: #fbbf24;" id="activeGameTitle">ဂိမ်း</div>
                 <div style="font-size: 12px; color: #94a3b8;">လက်ကျန်: <span id="gameBal" style="font-weight:bold; color:#fff;">1000</span> Ks</div>
             </div>
-            <div id="activeGameContent" style="width: 100%; max-width: 480px; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;"></div>
+            <div id="activeGameContent" style="width: 100%; max-width: 480px; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-bottom: 20px;"></div>
         </div>
 
         <script>
@@ -322,12 +321,6 @@ app.get('/', (req, res) => {
             function openModal(id) { document.getElementById(id).style.display = 'flex'; }
             function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-            function addHistory(text) {
-                historyLogs.unshift(text);
-                let list = document.getElementById('historyList');
-                if(list) { list.innerHTML = historyLogs.map(item => `<p style="border-bottom:1px solid #334155; padding:6px 0;">${item}</p>`).join(''); }
-            }
-
             function calculateBonus() {
                 let amt = Number(document.getElementById('depAmount').value) || 0;
                 document.getElementById('totalDepPreview').innerText = amt + (amt * 0.05);
@@ -361,7 +354,6 @@ app.get('/', (req, res) => {
                     method: 'POST', headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({phone: currentUser.phone, type: 'ငွေထုတ်', amount: amt, ref: 'KPay'})
                 });
-                addHistory(`ငွေထုတ်: -${amt} ကျပ်`);
                 alert('ငွေထုတ် တောင်းဆိုမှု တင်ပြီးပါပြီ။');
                 closeModal('withdrawModal');
             }
@@ -426,12 +418,12 @@ app.get('/', (req, res) => {
                     title.innerText = '📈 Win Go (Colour Trading)';
                     content.innerHTML = `
                         <div style="text-align:center; width:100%; display:flex; flex-direction:column; align-items:center;">
-                            <div style="background:rgba(30,41,59,0.7); border:1px solid #334155; padding:12px 20px; border-radius:14px; margin-bottom:10px; width:100%; max-width:360px; display:flex; justify-content:space-between; align-items:center;">
+                            <div style="background:rgba(30,41,59,0.7); border:1px solid #334155; padding:12px 20px; border-radius:14px; margin-bottom:10px; width:100%; max-width:380px; display:flex; justify-content:space-between; align-items:center;">
                                 <span style="font-size:13px; color:#94a3b8;">ထွက်မည့်အချိန်:</span>
                                 <span id="wgTimer" style="font-size:20px; font-weight:bold; color:#fbbf24;">60 စက္ကန့်</span>
                             </div>
                             ${getBetControlHTML(10)}
-                            <div style="display:flex; gap:8px; justify-content:center; margin:10px 0; width:100%; max-width:360px;">
+                            <div style="display:flex; gap:8px; justify-content:center; margin:10px 0; width:100%; max-width:380px;">
                                 <button style="flex:1; background:linear-gradient(135deg, #ef4444, #b91c1c); color:white; border:none; padding:14px; border-radius:10px; font-weight:bold; cursor:pointer;" onclick="selectWingo('အနီ')">အနီ (Red)</button>
                                 <button style="flex:1; background:linear-gradient(135deg, #10b981, #047857); color:white; border:none; padding:14px; border-radius:10px; font-weight:bold; cursor:pointer;" onclick="selectWingo('အစိမ်း')">အစိမ်း (Green)</button>
                                 <button style="flex:1; background:linear-gradient(135deg, #3b82f6, #1d4ed8); color:white; border:none; padding:14px; border-radius:10px; font-weight:bold; cursor:pointer;" onclick="selectWingo('အပြာ')">အပြာ (Violet)</button>
@@ -446,7 +438,7 @@ app.get('/', (req, res) => {
                         <div style="font-size: 45px; margin-bottom: 5px;" id="crushPlane">🚀</div>
                         <div style="font-size: 34px; font-weight: 900; color: #38bdf8; margin-bottom: 10px;" id="crushMult">1.00x</div>
                         ${getBetControlHTML(10)}
-                        <div style="display:flex; gap:10px; margin-top:10px; width: 100%; max-width: 360px; justify-content: center;">
+                        <div style="display:flex; gap:10px; margin-top:10px; width: 100%; max-width: 380px; justify-content: center;">
                             <button style="flex:1; background:linear-gradient(135deg, #10b981, #047857); color:white; border:none; padding:14px; border-radius:10px; font-weight:bold; cursor:pointer;" id="crushStartBtn" onclick="startCrush()">လောင်းပြီး စတင်မည်</button>
                             <button style="flex:1; background:linear-gradient(135deg, #ef4444, #b91c1c); color:white; border:none; padding:14px; border-radius:10px; font-weight:bold; cursor:pointer; display:none;" id="crushCashBtn" onclick="cashoutCrush()">💸 Cash Out (ငွေထုတ်)</button>
                         </div>
@@ -455,21 +447,21 @@ app.get('/', (req, res) => {
                     title.innerText = '💎 Mines (ဗုံးရှောင်)';
                     content.innerHTML = `
                         ${getBetControlHTML(10)}
-                        <div style="margin-bottom: 10px; font-size: 13px; color:#94a3b8;">
-                            ဗုံးအရေအတွက်: <select id="mineCount" style="width:70px; display:inline-block; padding:6px; background:#090d16; color:#fff; border:1px solid #475569; border-radius:6px; outline:none;"><option value="3">3</option><option value="5" selected>5</option><option value="8">8</option></select>
-                            <button style="background:#fbbf24; color:#0f172a; border:none; padding:8px 16px; border-radius:8px; font-weight:bold; margin-left:10px; cursor:pointer;" onclick="startMinesGame()">စတင်မည်</button>
+                        <div style="margin-bottom: 10px; font-size: 13px; color:#94a3b8; display:flex; align-items:center; gap:10px;">
+                            ဗုံးအရေအတွက်: <select id="mineCount" style="width:80px; padding:6px; background:#090d16; color:#fff; border:1px solid #475569; border-radius:6px; outline:none;"><option value="3">3</option><option value="5" selected>5</option><option value="8">8</option></select>
+                            <button style="background:#fbbf24; color:#0f172a; border:none; padding:8px 16px; border-radius:8px; font-weight:bold; cursor:pointer;" onclick="startMinesGame()">စတင်မည်</button>
                         </div>
-                        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; width: 100%; max-width: 300px;" id="minesGrid">
+                        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; width: 100%; max-width: 320px;" id="minesGrid">
                             ${Array(25).fill(0).map(() => `<div style="background:#1e293b; border:1px solid #334155; aspect-ratio:1; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:18px;">🔒</div>`).join('')}
                         </div>
-                        <button id="mineCashoutBtn" style="display:none; width: 100%; max-width: 300px; background:linear-gradient(135deg, #10b981, #047857); color:white; border:none; padding:12px; border-radius:10px; font-weight:bold; margin-top:12px; cursor:pointer;" onclick="cashoutMines()">ငွေထုတ်ယူမည် (Cash Out)</button>
+                        <button id="mineCashoutBtn" style="display:none; width: 100%; max-width: 320px; background:linear-gradient(135deg, #10b981, #047857); color:white; border:none; padding:12px; border-radius:10px; font-weight:bold; margin-top:12px; cursor:pointer;" onclick="cashoutMines()">ငွေထုတ်ယူမည် (Cash Out)</button>
                     `;
                 } else if (type === 'dice') {
                     title.innerText = '🎲 Dice (အန်စာတုံး)';
                     content.innerHTML = `
                         <div style="font-size: 50px; margin: 15px;" id="diceDisplay">🎲 ⚀</div>
                         ${getBetControlHTML(10)}
-                        <div style="display: flex; gap: 10px; margin-top:10px; width: 100%; max-width: 360px;">
+                        <div style="display: flex; gap: 10px; margin-top:10px; width: 100%; max-width: 380px;">
                             <button style="flex:1; background:linear-gradient(135deg, #ef4444, #b91c1c); color:white; border:none; padding:14px; border-radius:10px; font-weight:bold; cursor:pointer;" onclick="playDiceGame('Low')">Low (1-3) [2x]</button>
                             <button style="flex:1; background:linear-gradient(135deg, #3b82f6, #1d4ed8); color:white; border:none; padding:14px; border-radius:10px; font-weight:bold; cursor:pointer;" onclick="playDiceGame('High')">High (4-6) [2x]</button>
                         </div>
@@ -480,7 +472,7 @@ app.get('/', (req, res) => {
                         <div style="text-align:center; width:100%; display:flex; flex-direction:column; align-items:center;">
                             <div style="font-size:40px; margin-bottom:10px;" id="plinkoBall">🔴</div>
                             ${getBetControlHTML(10)}
-                            <button style="background:linear-gradient(135deg, #fbbf24, #d97706); color:#0f172a; border:none; padding:14px 30px; border-radius:10px; font-weight:bold; cursor:pointer; margin-top:12px; width:100%; max-width:360px;" onclick="playPlinkoGame()">ဘောလုံးကြွေချမည်</button>
+                            <button style="background:linear-gradient(135deg, #fbbf24, #d97706); color:#0f172a; border:none; padding:14px 30px; border-radius:10px; font-weight:bold; cursor:pointer; margin-top:12px; width:100%; max-width:380px;" onclick="playPlinkoGame()">ဘောလုံးကြွေချမည်</button>
                             <p id="plinkoResult" style="margin-top:12px; font-weight:bold; color:#34d399;"></p>
                         </div>
                     `;
